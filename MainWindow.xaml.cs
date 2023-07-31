@@ -8,8 +8,8 @@ namespace Calculator
     /// </summary>
     public partial class MainWindow : Window
     {
-        private SelectedOperator? _selectedOperator = null;
-        private double calculatedResult = 0.0;
+        private SelectedOperator _selectedOperator = SelectedOperator.Nothing;
+        private double _calculatedResult = 0.0;
         public MainWindow()
         {
             InitializeComponent();
@@ -30,10 +30,21 @@ namespace Calculator
 
         private void NegativeBtn_OnClick(object sender, RoutedEventArgs e)
         {
+            if (double.TryParse(ResultLbl.Content.ToString(), out var result))
+            {
+
+                ResultLbl.Content = result * -1;
+            }
+
         }
 
         private void PercentageBtn_OnClick(object sender, RoutedEventArgs e)
         {
+            if (double.TryParse(ResultLbl.Content.ToString(), out var result))
+            {
+
+                ResultLbl.Content = result / 100;
+            }
         }
 
         private void EqualBtn_OnClick(object sender, RoutedEventArgs e)
@@ -42,12 +53,10 @@ namespace Calculator
 
         private void DotBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new System.NotImplementedException();
         }
 
         private void OnOperationBtnClick(object sender, RoutedEventArgs e)
         {
-
 
         }
 
@@ -68,6 +77,7 @@ namespace Calculator
         Addition,
         Subtract,
         Multiply,
-        Divide
+        Divide,
+        Nothing
     }
 }
