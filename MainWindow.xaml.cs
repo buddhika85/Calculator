@@ -61,7 +61,7 @@ namespace Calculator
             var operation = GetBtnContent(sender);
             if (_selectedOperator != SelectedOperator.Nothing)
             {
-                ExpressionLbl.Content = $"{ExpressionLbl.Content}{ResultLbl.Content}";
+                ExpressionLbl.Content = $"{ExpressionLbl.Content}{ResultLbl.Content}{operation}";
                 PerformOperation();     // previous calculation
             }
             else
@@ -85,7 +85,10 @@ namespace Calculator
                     }
                     else
                     {
-                        ResultLbl.Content = $"{ResultLbl.Content}{selectedNumber}";
+                        if (_selectedOperator == SelectedOperator.Nothing)
+                            ResultLbl.Content = $"{ResultLbl.Content}{selectedNumber}";
+                        else
+                            ResultLbl.Content = $"{selectedNumber}";
                     }
                 }
                 else
