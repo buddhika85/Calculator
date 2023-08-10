@@ -143,15 +143,9 @@
                 Margin="5"
                 x:Name="ZeroBtn"
                 Click="OnNumberBtnClick"/>
-
-        <Button Content="." 
-                Grid.Row="6" Grid.Column="2"
-                Margin="5"
-                x:Name="DotBtn" 
-                Click="DotBtn_OnClick"/>
-
+        
         <Button Content="=" 
-                Grid.Row="6" Grid.Column="3"
+                Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2"
                 Margin="5"
                 x:Name="EqualBtn" 
                 Click="EqualBtn_OnClick"/>

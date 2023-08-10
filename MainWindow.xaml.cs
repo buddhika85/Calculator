@@ -96,6 +96,7 @@ namespace Calculator
             ResultLbl.Content = string.Empty;
             ExpressionLbl.Content = string.Empty;
             _calculatedValue = 0.0;
+            _selectedOperator = SelectedOperator.Nothing;
         }
 
 
@@ -117,18 +118,17 @@ namespace Calculator
         {
             if (double.TryParse(ResultLbl.Content.ToString(), out var result))
             {
-
                 ResultLbl.Content = result / 100;
             }
         }
 
         private void EqualBtn_OnClick(object sender, RoutedEventArgs e)
         {
+            ExpressionLbl.Content = $"{ExpressionLbl.Content}{ResultLbl.Content} = ";
+            PerformOperation();
+            _selectedOperator = SelectedOperator.Equal;
         }
 
-        private void DotBtn_OnClick(object sender, RoutedEventArgs e)
-        {
-        }
 
         private void OnOperationBtnClick(object sender, RoutedEventArgs e)
         {
@@ -170,7 +170,13 @@ namespace Calculator
         /// <param name="selectedNumber"></param>
         private void OnNumberInput(int selectedNumber)
         {
-            if (_selectedOperator != SelectedOperator.Nothing)
+            if (_selectedOperator == SelectedOperator.Equal)
+            {
+                // previous calculation is complete, starting a new
+                SetDefaults();
+                ResultLbl.Content = $"{selectedNumber}";
+            }
+            else if (_selectedOperator != SelectedOperator.Nothing)
             {
                 if (_calculatedValue == 0.0)
                 {
@@ -244,29 +250,12 @@ namespace Calculator
                     break;
             }
         }
-
-        //private string GetSelectedOperator()
-        //{
-        //    switch (_selectedOperator)
-        //    {
-        //        case SelectedOperator.Addition:
-        //            return "+";
-        //        case SelectedOperator.Subtract:
-        //            return "-";
-        //        case SelectedOperator.Multiply:
-        //            return "*";
-        //        case SelectedOperator.Divide:
-        //            return "/";
-        //        case SelectedOperator.Nothing:
-        //            return "";
-        //        default:
-        //            return "";
-        //    }
-        //}
     }
 
     public enum SelectedOperator
     {
+        Equal,
+
         Addition,
         Subtract,
         Multiply,
