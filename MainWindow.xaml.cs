@@ -80,6 +80,7 @@ namespace Calculator
                     break;
                 case Key.Enter:
                     operationPressed = "=";
+                    PerformEqualOperator();
                     break;
                     //case Key.Decimal:
                     //    operationPressed = ".";
@@ -126,11 +127,7 @@ namespace Calculator
 
         private void EqualBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            if (_lastInputOperator)
-                return;     // you cannot press two operator buttons together
-            ExpressionLbl.Content = $"{ExpressionLbl.Content}{ResultLbl.Content} = ";
-            PerformOperation();
-            _selectedOperator = SelectedOperator.Equal;
+            PerformEqualOperator();
         }
 
 
@@ -158,6 +155,9 @@ namespace Calculator
         /// <param name="operation"></param>
         private void OnOperationInput(string? operation)
         {
+            if (string.IsNullOrWhiteSpace(operation) || operation == "=")
+                return;
+
             if (_selectedOperator != SelectedOperator.Nothing)
             {
                 ExpressionLbl.Content = $"{ExpressionLbl.Content}{ResultLbl.Content}{operation}";
@@ -229,6 +229,15 @@ namespace Calculator
             _selectedOperator = SelectedOperator.Nothing;
             //ExpressionLbl.Content = lastNumber;
             ResultLbl.Content = _calculatedValue;
+        }
+
+        private void PerformEqualOperator()
+        {
+            if (_lastInputOperator)
+                return;     // you cannot press two operator buttons together
+            ExpressionLbl.Content = $"{ExpressionLbl.Content}{ResultLbl.Content} = ";
+            PerformOperation();
+            _selectedOperator = SelectedOperator.Equal;
         }
 
         private string? GetBtnContent(object sender)
