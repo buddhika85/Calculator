@@ -10,7 +10,8 @@ namespace Calculator
     public partial class MainWindow : Window
     {
         private SelectedOperator _selectedOperator = SelectedOperator.Nothing;
-        private double _calculatedValue = 0.0;
+        private double _calculatedValue;
+        private bool _lastInputOperator;
 
         public MainWindow()
         {
@@ -96,6 +97,7 @@ namespace Calculator
             ResultLbl.Content = string.Empty;
             ExpressionLbl.Content = string.Empty;
             _calculatedValue = 0.0;
+            _lastInputOperator = false;
             _selectedOperator = SelectedOperator.Nothing;
         }
 
@@ -124,6 +126,8 @@ namespace Calculator
 
         private void EqualBtn_OnClick(object sender, RoutedEventArgs e)
         {
+            if (_lastInputOperator)
+                return;     // you cannot press two operator buttons together
             ExpressionLbl.Content = $"{ExpressionLbl.Content}{ResultLbl.Content} = ";
             PerformOperation();
             _selectedOperator = SelectedOperator.Equal;
@@ -132,6 +136,9 @@ namespace Calculator
 
         private void OnOperationBtnClick(object sender, RoutedEventArgs e)
         {
+            if (_lastInputOperator)
+                return;     // you cannot press two operator buttons together
+            _lastInputOperator = true;
             var operation = GetBtnContent(sender);
             OnOperationInput(operation);
         }
@@ -139,10 +146,10 @@ namespace Calculator
         private void OnNumberBtnClick(object sender, RoutedEventArgs e)
         {
             var numberStr = GetBtnContent(sender);
-            if (int.TryParse(numberStr, out var selectedNumber))
-            {
-                OnNumberInput(selectedNumber);
-            }
+            if (!int.TryParse(numberStr, out var selectedNumber))
+                return;
+            _lastInputOperator = false;
+            OnNumberInput(selectedNumber);
         }
 
         /// <summary>
