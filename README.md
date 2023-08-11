@@ -6,4 +6,4 @@ XAML - WPF
 
 used Event-Driven Architecture (non-MVVM).
 
-Please view Example Image.png to see an image of UI.
+Please view Example Image.png in the main branch to see an image of UI.
